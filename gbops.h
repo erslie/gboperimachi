@@ -1,8 +1,11 @@
 #include <stdint.h>
 
-
-#define STRINGIFY(x) #x
-#define MNEMONIC_ENUM_TO_STRING(mnemonic) STRINGIFY(mnemonic)
+//HLD or HLI
+typedef enum {
+  hl_type_normanl,
+  hl_type_increment,
+  hl_type_decrement,
+} hl_type;
 
 //mnemonic
 typedef enum {
@@ -119,7 +122,7 @@ const char* const mnemonic_array[47][12] = {
 
 typedef struct {
   int opcode;
-  mnemonic mnemonic;
-  char operand_array[][13];
+  int gb_mnemonic;
+  char operand_array[1][13];
 } gb_instruction_t;
 
