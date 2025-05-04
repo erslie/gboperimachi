@@ -118,7 +118,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       //source
       switch (opcode & 0x07){
       case 0x00: src = "B"; break;
-      case 0x01: src = 'C'; break;
+      case 0x01: src = "C"; break;
       case 0x02: src = "D"; break;
       case 0x03: src = "E"; break;
       case 0x04: src = "H"; break;
