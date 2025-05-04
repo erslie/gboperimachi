@@ -121,8 +121,9 @@ const char* const mnemonic_array[47][12] = {
 };
 
 typedef struct {
-  int opcode;
-  int gb_mnemonic;
-  char operand_array[1][13];
+  char mnemonic[8];
+  char dst[16];
+  char src[16];
 } gb_instruction_t;
 
+gb_instruction_t generate_gb_ld_operands(uint8_t opcode);

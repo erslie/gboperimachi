@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <jansson.h>
+#include "gbops.h"
 
 #define BUFFER_SIZE 4096 
 
@@ -46,9 +47,12 @@ int main(int argc, char *argv[]) {
 
     const char *mnemonic = json_string_value(mnemonic_json);
     int bytes = json_integer_value(bytes_json);
-    int opcode = strtol(opcode_str + 2, NULL, 16);
-
-    fprintf(fp, "       0x%02X => self.%s(bus, operand),\n", opcode, mnemonic);
+    uint8_t opcode = strtol(opcode_str + 2, NULL, 16);
+    
+    if (strcmp(mnemonic, "LD") == 0) {
+      gb_instruction_t ins = generate_gb_ld_operands(opcode);
+      fprintf(fp, "       0x%02X => self.ld(bus, %s, %s),\n", opcode, mnemonic, ins.dst, ins.src);
+    }
   }
 
   json_decref(root);
