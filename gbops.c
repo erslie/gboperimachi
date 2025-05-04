@@ -17,7 +17,6 @@
 #define IMM16 "Imm16"
 #endif
 
-char mnemonic[];
 int bytes;
 int cycles;
 hl_type hl;
