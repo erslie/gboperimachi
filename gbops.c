@@ -32,8 +32,8 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
 
   switch (opcode) {
 
-    const char* initial_dst;
-    const char* initial_src;
+    const char* initial_dst = "";
+    const char* initial_src = "";
     const char* dst;
     const char* src;
 
