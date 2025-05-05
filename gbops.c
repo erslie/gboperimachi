@@ -337,7 +337,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
     }
 
     case 0xFA: {
-      strcpy(initial_dst, DIRECT8);
+      strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
       strcpy(initial_src, DIRECT8);
