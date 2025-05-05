@@ -66,9 +66,9 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
         case 0x04:
         case 0x05:
         case 0x07:
-          initial_dst = REG8; break;
+          strcpy(initial_dst, REG8); break;
         case 0x06: 
-          initial_dst = INDIRECT; break;//ddd = 110 ならIndirect::HL
+          strcpy(initial_dst, INDIRECT); break;//ddd = 110 ならIndirect::HL
         default: return result;
       }
       strcpy(result.mnemonic, "LD");
@@ -109,9 +109,9 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
         case 0x04:
         case 0x05:
         case 0x07:
-          initial_dst = REG8; break;
+          strcpy(initial_dst, REG8); break;
         case 0x06: 
-          initial_dst = INDIRECT; break;//ddd = 110 ならIndirect::HL
+          strcpy(initial_dst, INDIRECT); break;//ddd = 110 ならIndirect::HL
         default: return result;
       }
 
@@ -137,9 +137,9 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
         case 0x04:
         case 0x05:
         case 0x07:
-          initial_src = REG8; break;
+          strcpy(initial_src, REG8); break;
         case 0x06: 
-          initial_src = INDIRECT; break;//ddd = 110 ならIndirect::HL
+          strcpy(initial_src, INDIRECT); break;//ddd = 110 ならIndirect::HL
         default: return result;
       }
       strcpy(result.mnemonic, "LD");
@@ -154,55 +154,55 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
 
     //8bit転送(A -> BC, DE, HL+, HL- , $FF00+C, a8)
     case 0x02: {
-      initial_dst = INDIRECT;
+      strcpy(initial_dst, INDIRECT);
       strcat(initial_dst, "BC");
       strcpy(result.dst, initial_dst);
-      initial_src = REG8;
+      strcpy(initial_src, REG8);
       strcat(initial_src, "A");
       strcpy(result.src, initial_src);
       return result;
     }     
     case 0x12:{
-      initial_dst = INDIRECT;
+      strcpy(initial_dst, INDIRECT);
       strcat(initial_dst, "DE");
       strcpy(result.dst, initial_dst);
-      initial_src = REG8;
+      strcpy(initial_src, REG8);
       strcat(initial_src, "A");
       strcpy(result.src, initial_src);
       return result;
     }
     case 0x22:{
-      initial_dst = INDIRECT;
+      strcpy(initial_dst, INDIRECT);
       strcat(initial_dst, "HLI");
       strcpy(result.dst, initial_dst);
-      initial_src = REG8;
+      strcpy(initial_src, REG8);
       strcat(initial_src, "A");
       strcpy(result.src, initial_src);
       return result;
     }
     case 0x32:{
-      initial_dst = INDIRECT;
+      strcpy(initial_dst, INDIRECT);
       strcat(initial_dst, "HLD");
       strcpy(result.dst, initial_dst);
-      initial_src = REG8;
+      strcpy(initial_src, REG8);
       strcat(initial_src, "A");
       strcpy(result.src, initial_src);
       return result;
     }
     case 0xE2:{
-      initial_dst = INDIRECT;
+      strcpy(initial_dst, INDIRECT);
       strcat(initial_dst, "CFF");
       strcpy(result.dst, initial_dst);
-      initial_src = REG8;
+      strcpy(initial_src, REG8);
       strcat(initial_src, "A");
       strcpy(result.src, initial_src);
       return result;
     }
     case 0xE0: {
-      initial_dst = DIRECT8;
+      strcpy(initial_dst, DIRECT8 );
       strcat(initial_dst, "DFF");
       strcpy(result.dst, initial_dst);
-      initial_src = REG8;
+      strcpy(initial_src, REG8);
       strcat(initial_src, "A");
       strcpy(result.src, initial_src);
       return result;
@@ -210,55 +210,55 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
 
     //8bit転送 (BC, DE, HL+, HL- , $FF00+C, a8 -> A)
     case 0x0A: {
-      initial_dst = REG8;
+      strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
-      initial_src = INDIRECT;
+      strcpy(initial_src, INDIRECT);
       strcat(initial_src, "BC");
       strcpy(result.src ,initial_src);
       return result;
     }
     case 0x1A: {
-      initial_dst = REG8;
+      strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
-      initial_src = INDIRECT;
+      strcpy(initial_src, INDIRECT);
       strcat(initial_src, "DE");
       strcpy(result.src ,initial_src);
       return result;
     }
     case 0x2A: {
-      initial_dst = REG8;
+      strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
-      initial_src = INDIRECT;
+      strcpy(initial_src, INDIRECT);
       strcat(initial_src, "HLI");
       strcpy(result.src ,initial_src);
       return result;
     }
     case 0x3A: {
-      initial_dst = REG8;
+      strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
-      initial_src = INDIRECT;
+      strcpy(initial_src, INDIRECT);
       strcat(initial_src, "HLD");
       strcpy(result.src ,initial_src);
       return result;
     }
     case 0xF2: {
-      initial_dst = REG8;
+      strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
-      initial_src = INDIRECT;
+      strcpy(initial_src, INDIRECT);
       strcat(initial_src, "CFF");
       strcpy(result.src ,initial_src);
       return result;
     }
     case 0xF0: {
-      initial_dst = REG8;
+      strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
-      initial_src = DIRECT8;
+      strcpy(initial_src, DIRECT8);
       strcat(initial_src, "DFF");
       strcpy(result.src ,initial_src);
       return result;
