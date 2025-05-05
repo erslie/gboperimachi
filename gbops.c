@@ -13,6 +13,7 @@
 #define INDIRECT "Indirect::"
 #define COND "Cond::"
 #define DIRECT8 "Direct8::"
+#define DIRECT16 "Direct16"
 #define IMM8 "Imm8"
 #define IMM16 "Imm16"
 #endif
@@ -32,8 +33,8 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
 
   switch (opcode) {
 
-    char* initial_dst[16];
-    char* initial_src[16];
+    char initial_dst[16];
+    char initial_src[16];
     const char* dst;
     const char* src;
 
@@ -263,7 +264,93 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       strcpy(result.src ,initial_src);
       return result;
     }
+
+    //16bit転送(Imm16 -> Reg) 
+    case 0x01: {
+      strcpy(initial_dst, REG16);
+      strcat(initial_dst, "BC");
+      strcpy(result.dst, initial_dst);
+      strcpy(result.src, IMM16);
+      return result;
+    }
+    case 0x11: {
+      strcpy(initial_dst, REG16);
+      strcat(initial_dst, "DE");
+      strcpy(result.dst, initial_dst);
+      strcpy(result.src, IMM16);
+      return result;
+    }
+    case 0x21: {
+      strcpy(initial_dst, REG16);
+      strcat(initial_dst, "HL");
+      strcpy(result.dst, initial_dst);
+      strcpy(result.src, IMM16);
+      return result;
+    }
+    case 0x31: {
+      strcpy(initial_dst, REG16);
+      strcat(initial_dst, "SP");
+      strcpy(result.dst, initial_dst);
+      strcpy(result.src, IMM16);
+      return result;
+    }
+
+    case 0x08: {
+      strcpy(result.dst, DIRECT16);
+      strcpy(initial_src, REG16);
+      strcat(initial_src, "SP");
+      strcpy(result.src, initial_src);
+    }
+
+    case 0x0E: {
+      strcpy(initial_dst, REG8);
+      strcat(initial_dst, "C");
+      strcpy(result.dst, initial_dst);
+      strcpy(result.src, IMM8);
+    }
+    case 0x1E: {
+      strcpy(initial_dst, REG8);
+      strcat(initial_dst, "E");
+      strcpy(result.dst, initial_dst);
+      strcpy(result.src, IMM8);
+    }
+    case 0x2E: {
+      strcpy(initial_dst, REG8);
+      strcat(initial_dst, "L");
+      strcpy(result.dst, initial_dst);
+      strcpy(result.src, IMM8);
+    }
+    case 0x3E: {
+      strcpy(initial_dst, REG8);
+      strcat(initial_dst, "A");
+      strcpy(result.dst, initial_dst);
+      strcpy(result.src, IMM8);
+    }
+
+    case 0xEA: {
+      strcpy(initial_dst, DIRECT8);
+      strcat(initial_dst, "D");
+      strcpy(result.dst, initial_dst);
+      strcpy(initial_src, REG8);
+      strcat(initial_src, "A");
+      strcpy(result.src, initial_src);
+    }
+
+    case 0xFA: {
+      strcpy(initial_dst, DIRECT8);
+      strcat(initial_dst, "A");
+      strcpy(result.dst, initial_dst);
+      strcpy(initial_src, DIRECT8);
+      strcat(initial_src, "D");
+      strcpy(result.src,initial_src);
+    }
+
+
+
+
+
   }
+
   return result;
 }
 
