@@ -300,6 +300,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       strcpy(initial_src, REG16);
       strcat(initial_src, "SP");
       strcpy(result.src, initial_src);
+      return result;
     }
 
     case 0x0E: {
@@ -307,24 +308,28 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       strcat(initial_dst, "C");
       strcpy(result.dst, initial_dst);
       strcpy(result.src, IMM8);
+      return result;
     }
     case 0x1E: {
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "E");
       strcpy(result.dst, initial_dst);
       strcpy(result.src, IMM8);
+      return result;
     }
     case 0x2E: {
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "L");
       strcpy(result.dst, initial_dst);
       strcpy(result.src, IMM8);
+      return result;
     }
     case 0x3E: {
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
       strcpy(result.src, IMM8);
+      return result;
     }
 
     case 0xEA: {
@@ -334,6 +339,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       strcpy(initial_src, REG8);
       strcat(initial_src, "A");
       strcpy(result.src, initial_src);
+      return result;
     }
 
     case 0xFA: {
@@ -343,12 +349,11 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       strcpy(initial_src, DIRECT8);
       strcat(initial_src, "D");
       strcpy(result.src,initial_src);
+      return result;
     }
 
-
-
-
-
+    return result;
+    
   }
 
   return result;
