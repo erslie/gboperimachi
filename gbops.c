@@ -1,22 +1,5 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
+
 #include "gbops.h"
-
-// Rust = 1,
-#define LANG_VALUE 1
-
-#if LANG_VALUE == 1
-#define REG8 "Reg8::"
-#define REG16 "Reg16::"
-#define INDIRECT "Indirect::"
-#define COND "Cond::"
-#define DIRECT8 "Direct8::"
-#define DIRECT16 "Direct16"
-#define IMM8 "Imm8"
-#define IMM16 "Imm16"
-#endif
 
 int bytes;
 int cycles;
@@ -267,6 +250,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
 
     //16bit転送(Imm16 -> Reg) 
     case 0x01: {
+      strcpy(result.mnemonic, "ld16");
       strcpy(initial_dst, REG16);
       strcat(initial_dst, "BC");
       strcpy(result.dst, initial_dst);
@@ -353,42 +337,41 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
     }
 
     return result;
-    
+
   }
 
   return result;
 }
 
-// gb_instruction_t generate_gb_instrucion(char arg_mnemonic, 
-//                                         int arg_bytes,
-//                                         int arg_opcode,
-//                                         int arg_cycles,
-//                                         char *arg_fisrt_operand_name,
-//                                         char *arg_second_operand_name,
-//                                         uint8_t opcode,
-//                                         hl_type arg_hl) {
+gb_instruction_t generate_gb_instrucion(char arg_mnemonic, 
+                                        char *dst_name,
+                                        char *src_name,
+                                        uint8_t opcode,
+                                        hl_type arg_hl) {
   
-//   int f_name_len = strlen(arg_fisrt_operand_name);
-//   int s_name_len = strlen(arg_second_operand_name);
-//   strcpy(mnemonic, arg_mnemonic);
-//   bytes = arg_bytes;
-//   cycles = arg_cycles;
-//   hl = arg_hl;
-//   char ret_gb_mnemonic;
-//   int ret_gb_opcode;
-//   //ld ld16
-//   if (strcmp("LD", arg_mnemonic) == 0 || strcmp("LDH", arg_mnemonic) == 0) {
-//     generate_gb_ld_operands(*arg_fisrt_operand_name, *arg_second_operand_name);
-//     //srcかdstどちらが8bitレジスタなら8bit転送、ただし0x36はHLに対してImm8をロードしているためsrcがn8で判断
-//     if (f_name_len == 1 
-//       ||s_name_len == 1
-//       ||strcmp("n8", arg_second_operand_name) == 0) {
-//         ret_gb_mnemonic = ld;
-//     } else {
-//       ret_gb_mnemonic = ld16;
-//     }
-//   }
+  int dst_name_len = strlen(dst_name);
+  int src_name_len = strlen(src_name);
+  hl = arg_hl;
+  char ret_gb_mnemonic;
+  int ret_gb_opcode;
+  gb_instruction_t gb_inst;
+
+  //ld ld16
+  if (strcmp("LD", arg_mnemonic) == 0 || strcmp("LDH", arg_mnemonic) == 0) {
+    gb_inst = generate_gb_ld_operands(opcode);
+    //srcかdstどちらが8bitレジスタなら8bit転送、ただし0x36はHLに対してImm8をロードしているためsrcがn8で判断
+    if (dst_name_len == 1 
+      ||src_name_len == 1
+      ||strcmp("n8", src_name) == 0) {
+        strcpy(gb_inst.mnemonic, "ld");
+    } else {
+      strcpy(gb_inst.mnemonic, "ld16");
+    }
+
+    return gb_inst;
+
+  }
 
 
-// }
+}
 
