@@ -62,8 +62,17 @@ FILE decode_for_rust_code (json_t *unprefixed) {
   
     if (strcmp(mnemonic, "LD") == 0) {
       gb_instruction_t ins = generate_gb_ld_operands(opcode);
-      fprintf(fp, "       0x%02X => self.ld(bus, %s, %s),\n", opcode, ins.dst, ins.src);
+      fprintf(fp, "       0x%02X => self.%s(bus",opcode, ins.mnemonic);
+    
+      if (strlen(ins.dst) > 0) {
+        fprintf(fp, ",%s",ins.dst);
+      }
+      if (strlen(ins.src) > 0) {
+        fprintf(fp, ",%s", ins.src);
+      }
+      fprintf(fp, "),\n");
     }
+    
     return fp;
   }
 

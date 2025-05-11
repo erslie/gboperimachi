@@ -55,7 +55,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
           strcpy(initial_dst, INDIRECT); break;//ddd = 110 ならIndirect::HL
         default: return result;
       }
-      strcpy(result.mnemonic, "LD");
+      strcpy(result.mnemonic, LD);
       strcat(initial_dst, dst);
       strncpy(result.dst, initial_dst, sizeof(result.dst) - 1);
       result.dst[sizeof(result.dst) - 1] = '\0';
@@ -126,7 +126,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
           strcpy(initial_src, INDIRECT); break;//ddd = 110 ならIndirect::HL
         default: return result;
       }
-      strcpy(result.mnemonic, "LD");
+      strcpy(result.mnemonic, LD);
       strcat(initial_dst, dst);
       strncpy(result.dst, initial_dst, sizeof(result.dst) - 1);
       result.dst[sizeof(result.dst) - 1] = '\0';
@@ -138,6 +138,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
 
     //8bit転送(A -> BC, DE, HL+, HL- , $FF00+C, a8)
     case 0x02: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, INDIRECT);
       strcat(initial_dst, "BC");
       strcpy(result.dst, initial_dst);
@@ -147,6 +148,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }     
     case 0x12:{
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, INDIRECT);
       strcat(initial_dst, "DE");
       strcpy(result.dst, initial_dst);
@@ -156,6 +158,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0x22:{
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, INDIRECT);
       strcat(initial_dst, "HLI");
       strcpy(result.dst, initial_dst);
@@ -165,6 +168,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0x32:{
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, INDIRECT);
       strcat(initial_dst, "HLD");
       strcpy(result.dst, initial_dst);
@@ -174,6 +178,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0xE2:{
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, INDIRECT);
       strcat(initial_dst, "CFF");
       strcpy(result.dst, initial_dst);
@@ -183,6 +188,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0xE0: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, DIRECT8 );
       strcat(initial_dst, "DFF");
       strcpy(result.dst, initial_dst);
@@ -194,6 +200,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
 
     //8bit転送 (BC, DE, HL+, HL- , $FF00+C, a8 -> A)
     case 0x0A: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
@@ -203,6 +210,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0x1A: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
@@ -212,6 +220,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0x2A: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
@@ -221,6 +230,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0x3A: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
@@ -230,6 +240,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0xF2: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
@@ -239,6 +250,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0xF0: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
@@ -250,7 +262,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
 
     //16bit転送(Imm16 -> Reg) 
     case 0x01: {
-      strcpy(result.mnemonic, "ld16");
+      strcpy(result.mnemonic, LD16);
       strcpy(initial_dst, REG16);
       strcat(initial_dst, "BC");
       strcpy(result.dst, initial_dst);
@@ -258,6 +270,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0x11: {
+      strcpy(result.mnemonic, LD16);
       strcpy(initial_dst, REG16);
       strcat(initial_dst, "DE");
       strcpy(result.dst, initial_dst);
@@ -265,6 +278,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0x21: {
+      strcpy(result.mnemonic, LD16);
       strcpy(initial_dst, REG16);
       strcat(initial_dst, "HL");
       strcpy(result.dst, initial_dst);
@@ -272,6 +286,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0x31: {
+      strcpy(result.mnemonic, LD16);
       strcpy(initial_dst, REG16);
       strcat(initial_dst, "SP");
       strcpy(result.dst, initial_dst);
@@ -280,6 +295,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
     }
 
     case 0x08: {
+      strcpy(result.mnemonic, LD16);
       strcpy(result.dst, DIRECT16);
       strcpy(initial_src, REG16);
       strcat(initial_src, "SP");
@@ -288,6 +304,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
     }
 
     case 0x0E: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "C");
       strcpy(result.dst, initial_dst);
@@ -295,6 +312,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0x1E: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "E");
       strcpy(result.dst, initial_dst);
@@ -302,6 +320,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0x2E: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "L");
       strcpy(result.dst, initial_dst);
@@ -309,6 +328,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
       return result;
     }
     case 0x3E: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
@@ -317,6 +337,7 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
     }
 
     case 0xEA: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, DIRECT8);
       strcat(initial_dst, "D");
       strcpy(result.dst, initial_dst);
@@ -327,12 +348,23 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
     }
 
     case 0xFA: {
+      strcpy(result.mnemonic, LD);
       strcpy(initial_dst, REG8);
       strcat(initial_dst, "A");
       strcpy(result.dst, initial_dst);
       strcpy(initial_src, DIRECT8);
       strcat(initial_src, "D");
       strcpy(result.src,initial_src);
+      return result;
+    }
+
+    case 0xF8: {
+      strcpy(result.mnemonic, LD_HL_SP_E);
+      return result;
+    }
+
+    case 0xF9: {
+      strcpy(result.mnemonic, LD_SP_HL);
       return result;
     }
 
