@@ -1,6 +1,8 @@
 #include <jansson.h>
 #include "gbops.h"
 
+FILE decode_for_rust_code (json_t unprefixed);
+
 int main(int argc, char *argv[]) {
   json_error_t error;
   json_t *root = json_load_file("Opcodes.json", JSON_DECODE_ANY, &error);
@@ -20,7 +22,7 @@ int main(int argc, char *argv[]) {
   FILE fp;
 
   if (LANG_VALUE == 1) {
-    fp = decode_for_rust_code(unprefixed_instruction);
+    fp = decode_for_rust_code(unprefixed_instructions);
   }
 
   json_decref(root);
