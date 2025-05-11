@@ -1,4 +1,5 @@
 #include <jansson.h>
+#include <ctype.h>
 #include "gbops.h"
 
 FILE *decode_for_rust_code(json_t *unprefixed, json_t *root);
@@ -66,10 +67,10 @@ FILE *decode_for_rust_code(json_t *unprefixed, json_t *root) {
       gb_instruction_t ins = generate_gb_instrucion(opcode, *mnemonic);
       fprintf(fp, "       0x%02X => self.%s(bus",opcode, ins.mnemonic);
     
-      if (strlen(ins.dst) > 0) {
+      if (strlen(ins.dst) > 1) {
         fprintf(fp, ",%s",ins.dst);
       }
-      if (strlen(ins.src) > 0) {
+      if (strlen(ins.src) > 1) {
         fprintf(fp, ",%s", ins.src);
       }
       fprintf(fp, "),\n");
@@ -77,7 +78,7 @@ FILE *decode_for_rust_code(json_t *unprefixed, json_t *root) {
     
     return fp;
   }
-
+  
   return fp;
 
 }
