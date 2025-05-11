@@ -90,7 +90,7 @@ typedef enum {
 #define STOP "stop"
 
 typedef struct {
-  char mnemonic[8];
+  char mnemonic[16];
   char dst[16];
   char src[16];
 } gb_instruction_t;
