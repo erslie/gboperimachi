@@ -1,7 +1,7 @@
 #include <jansson.h>
 #include "gbops.h"
 
-FILE decode_for_rust_code (json_t *unprefixed, json_t *root);
+FILE *decode_for_rust_code(json_t *unprefixed, json_t *root);
 
 int main(int argc, char *argv[]) {
   json_error_t error;
@@ -32,14 +32,14 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-FILE decode_for_rust_code (json_t *unprefixed, json_t *root) {
+FILE *decode_for_rust_code(json_t *unprefixed, json_t *root) {
 
   FILE *fp = fopen("unprefixed_instructions.rs", "w");
 
   if (!fp) {
       fprintf(stderr, "Error: cannot open 'unprefixed_instruction.rs'\n");
       json_decref(root);
-      return 1;
+      return fp;
   }
 
   fprintf(fp, "impl Cpu {\n");
@@ -51,7 +51,7 @@ FILE decode_for_rust_code (json_t *unprefixed, json_t *root) {
   json_object_foreach(unprefixed, opcode_str, instruction_obj) {
     if (!json_is_object(instruction_obj)) {
       fprintf(stderr, "Error: missing for incorrect type for mnemonic, bytes, or cycles in opcode '%s'\n", opcode_str);
-      return 1;
+      return NULL;
     }
   
     json_t *mnemonic_json = json_object_get(instruction_obj, "mnemonic");
