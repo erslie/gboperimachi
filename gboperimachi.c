@@ -1,8 +1,6 @@
 #include <jansson.h>
 #include "gbops.h"
 
-#define BUFFER_SIZE 4096 
-
 int main(int argc, char *argv[]) {
   json_error_t error;
   json_t *root = json_load_file("Opcodes.json", JSON_DECODE_ANY, &error);
@@ -22,7 +20,7 @@ int main(int argc, char *argv[]) {
   FILE fp;
 
   if (LANG_VALUE == 1) {
-    fp = decode_for_rust_code;
+    fp = decode_for_rust_code(unprefixed_instruction);
   }
 
   json_decref(root);
@@ -30,7 +28,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-FILE decode_for_rust_code (json_t *unprefixed) {
+FILE decode_for_rust_code (json_t unprefixed) {
 
   FILE *fp = fopen("unprefixed_instructions.rs", "w");
 
@@ -46,7 +44,7 @@ FILE decode_for_rust_code (json_t *unprefixed) {
 
   const char *opcode_str;
   json_t *instruction_obj;
-  json_object_foreach(unprefixed_instructions, opcode_str, instruction_obj) {
+  json_object_foreach(unprefixed, opcode_str, instruction_obj) {
     if (!json_is_object(instruction_obj)) {
       fprintf(stderr, "Error: missing for incorrect type for mnemonic, bytes, or cycles in opcode '%s'\n", opcode_str);
       return 1;
