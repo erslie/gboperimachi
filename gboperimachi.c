@@ -64,7 +64,7 @@ FILE *decode_for_rust_code(json_t *unprefixed, json_t *root) {
     uint8_t opcode = strtol(opcode_str + 2, NULL, 16);
   
     if (strcmp(mnemonic, "LD") == 0 || strcmp(mnemonic, "CP") == 0) {
-      gb_instruction_t ins = generate_gb_instrucion(opcode, *mnemonic);
+      gb_instruction_t ins = generate_gb_instrucion(opcode, mnemonic);
       fprintf(fp, "       0x%02X => self.%s(bus",opcode, ins.mnemonic);
     
       if (strlen(ins.dst) > 1) {
