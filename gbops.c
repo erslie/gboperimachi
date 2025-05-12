@@ -416,7 +416,7 @@ gb_instruction_t generate_gb_cp_operands(uint8_t opcode) {
   return result;
 }
 
-gb_instruction_t generate_gb_instrucion(uint8_t opcode, char mnemonic) {
+gb_instruction_t generate_gb_instrucion(uint8_t opcode, const char *mnemonic) {
 
   if (strcmp(mnemonic, "LD") == 0) {
     return generate_gb_ld_operands(opcode);

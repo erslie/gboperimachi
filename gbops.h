@@ -95,4 +95,4 @@ typedef struct {
   char src[16];
 } gb_instruction_t;
 
-gb_instruction_t generate_gb_instrucion(uint8_t opcode, char *mnemonic);
+gb_instruction_t generate_gb_instrucion(uint8_t opcode, const char *mnemonic);
