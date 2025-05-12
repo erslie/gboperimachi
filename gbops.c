@@ -375,35 +375,58 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
   return result;
 }
 
-// gb_instruction_t generate_gb_instrucion(char arg_mnemonic, 
-//                                         char *dst_name,
-//                                         char *src_name,
-//                                         uint8_t opcode,
-//                                         hl_type arg_hl) {
-  
-//   int dst_name_len = strlen(dst_name);
-//   int src_name_len = strlen(src_name);
-//   hl = arg_hl;
-//   char ret_gb_mnemonic;
-//   int ret_gb_opcode;
-//   gb_instruction_t gb_inst;
+gb_instruction_t generate_gb_cp_operands(uint8_t opcode) {
+  gb_instruction_t result;
+  strcpy(result.mnemonic, "");
+  strcpy(result.dst, "");
+  strcpy(result.src, "");
 
-//   //ld ld16
-//   if (strcmp("LD", arg_mnemonic) == 0 || strcmp("LDH", arg_mnemonic) == 0) {
-//     gb_inst = generate_gb_ld_operands(opcode);
-//     //srcかdstどちらが8bitレジスタなら8bit転送、ただし0x36はHLに対してImm8をロードしているためsrcがn8で判断
-//     if (dst_name_len == 1 
-//       ||src_name_len == 1
-//       ||strcmp("n8", src_name) == 0) {
-//         strcpy(gb_inst.mnemonic, "ld");
-//     } else {
-//       strcpy(gb_inst.mnemonic, "ld16");
-//     }
+  switch (opcode) {
+    char initial_src[16];
+    const char* src;
 
-//     return gb_inst;
+    case 0xB8 ... 0xBF: {
+      strcpy(result.mnemonic, CP);
+      strcpy(initial_src, REG8);
+      switch (opcode & 0x07) {
+        case 0x00: src = "B"; break;
+        case 0x01: src = "C"; break;
+        case 0x02: src = "D"; break;
+        case 0x03: src = "E"; break;
+        case 0x04: src = "H"; break;
+        case 0x05: src = "L"; break;
+        case 0x06: src = "HL"; strcpy(initial_src, INDIRECT); break;
+        case 0x07: src = "A"; break;
+        default: return result;
+      }
+      strcat(initial_src, src);
+      strncpy(result.src, initial_src, sizeof(result.src) - 1);
+      result.src[sizeof(result.src) - 1] = '\0';
+      return result;
+    }
 
-//   }
+    case 0xFE: {
+      strcpy(result.mnemonic, CP);
+      strcpy(result.src, IMM8);
+      return result;
+    }
 
+    return result;
+  }
+  return result;
+}
 
-// }
+gb_instruction_t generate_gb_instrucion(uint8_t opcode, char mnemonic) {
+
+  if (strcmp(mnemonic, "LD") == 0) {
+    return generate_gb_ld_operands(opcode);
+  } 
+  else if (strcmp(mnemonic, "CP") == 0) {
+    return generate_gb_cp_operands(opcode);
+  }
+  else if (strcmp(mnemonic, "") == 0) {
+
+  }
+
+}
 
