@@ -75,8 +75,6 @@ FILE *decode_for_rust_code(json_t *unprefixed, json_t *root) {
       }
       fprintf(fp, "),\n");
     } 
-    
-    return fp;
   }
   return fp;
 
