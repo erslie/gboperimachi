@@ -5,14 +5,17 @@ int bytes;
 int cycles;
 hl_type hl;
 
-gb_instruction_t gbins;
+gb_instruction_t generate_gb_nop_operands(uint8_t opcode) {
+
+  gb_instruction_t result = {0};
+  
+  if (opcode != 0x76) return result;
+  strcpy(result.mnemonic, NOP);
+  return result;
+}
 
 gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
-
-  gb_instruction_t result;
-  strcpy(result.mnemonic, "");
-  strcpy(result.dst, "");
-  strcpy(result.src, "");
+  gb_instruction_t result = {0};
 
   switch (opcode) {
 
@@ -376,10 +379,8 @@ gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
 }
 
 gb_instruction_t generate_gb_cp_operands(uint8_t opcode) {
-  gb_instruction_t result;
-  strcpy(result.mnemonic, "");
-  strcpy(result.dst, "");
-  strcpy(result.src, "");
+  
+  gb_instruction_t result = {0};
 
   switch (opcode) {
     char initial_src[16];
@@ -418,13 +419,19 @@ gb_instruction_t generate_gb_cp_operands(uint8_t opcode) {
 
 gb_instruction_t generate_gb_instrucion(uint8_t opcode, const char *mnemonic) {
 
-  if (strcmp(mnemonic, "LD") == 0) {
+  if (strcmp(mnemonic, "nop") == 0) {
+    return generate_gb_nop_operands(opcode);
+  }
+  else if (strcmp(mnemonic, "LD") == 0) {
     return generate_gb_ld_operands(opcode);
   } 
   else if (strcmp(mnemonic, "CP") == 0) {
     return generate_gb_cp_operands(opcode);
   }
   else if (strcmp(mnemonic, "") == 0) {
+  }
+  else if (strcmp(mnemonic, "") == 0) {
+
 
   }
 
