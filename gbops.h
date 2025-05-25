@@ -26,6 +26,7 @@ typedef enum {
 } hl_type;
 
 
+//function name
 //Load instructions
 #define LD "ld"
 #define LD16 "ld16"
@@ -88,6 +89,10 @@ typedef enum {
 #define DAA "daa"
 #define NOP "nop"
 #define STOP "stop"
+
+//special instruction??
+#define HALT "halt" //0x76
+#define UNDEFINED "undefined"
 
 typedef struct {
   char mnemonic[16];

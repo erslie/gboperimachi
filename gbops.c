@@ -40,10 +40,10 @@ gb_instruction_t generate_gb_jr_operands(uint8_t opcode) {
   switch (opcode) {
 
     case 0x18: strcpy(result.mnemonic, JP); return result;
-    case 0x20: strcpy(src, "NZ"); break;
-    case 0x30: strcpy(src, "NC"); break;
-    case 0x28: strcpy(src, "Z"); break;
-    case 0x38: strcpy(src, "C"); break;
+    case 0x20: src = "NZ"; break;
+    case 0x30: src = "NC"; break;
+    case 0x28: src = "Z"; break;
+    case 0x38: src = "C"; break;
     default: return result;
   }
     
