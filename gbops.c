@@ -8,13 +8,113 @@ hl_type hl;
 gb_instruction_t generate_gb_nop_operands(uint8_t opcode) {
 
   gb_instruction_t result = {0};
-  
-  if (opcode != 0x76) return result;
+
+  if (opcode != 0x00) return result;
   strcpy(result.mnemonic, NOP);
   return result;
 }
 
+gb_instruction_t generate_gb_stop_operands(uint8_t opcode) {
+
+  gb_instruction_t result = {0};
+
+  if (opcode != 0x10) return result;
+  strcpy(result.mnemonic, STOP);
+  return result;
+}
+
+gb_instruction_t generate_gb_halt_operands(uint8_t opcode) {
+
+  gb_instruction_t result = {0};
+
+  if (opcode != 0x76) return result;
+  strcpy(result.mnemonic, HALT);
+  return result;
+}
+
+gb_instruction_t generate_gb_jr_operands(uint8_t opcode) {
+
+  gb_instruction_t result = {0};
+  const char* src;
+
+  switch (opcode) {
+
+    case 0x18: strcpy(result.mnemonic, JP); return result;
+    case 0x20: strcpy(src, "NZ"); break;
+    case 0x30: strcpy(src, "NC"); break;
+    case 0x28: strcpy(src, "Z"); break;
+    case 0x38: strcpy(src, "C"); break;
+    default: return result;
+  }
+    
+  strcpy(result.mnemonic, JP_C);
+  strcpy(result.src,COND);
+  strcat(result.src,src);
+  return result;
+}
+
+gb_instruction_t generate_gb_inc_operands(uint8_t opcode) {
+
+  gb_instruction_t result = {0};
+
+  char initial_dst[16];
+  const char* dst;
+
+  switch (opcode) {
+
+    //16bit転送(Reg16 increment)
+    case 0x03:
+    case 0x13:
+    case 0x23:
+    case 0x33: {
+      switch ((opcode >> 2) & 0x03) {
+      case 0x00: dst = "BC"; break;
+      case 0x01: dst = "DE"; break;
+      case 0x02: dst = "HL"; break;
+      case 0x03: dst = "SP"; break;
+      default: return result;
+      }
+      strcpy(result.mnemonic, INC16);
+      strcpy(initial_dst, REG16);
+      strcat(initial_dst, dst);
+      strcpy(result.dst, initial_dst);
+      return result;
+    }
+  }
+
+  //8bit
+  switch (opcode) {
+
+    case 0x04:
+    case 0x14:
+    case 0x24:
+    case 0x0C:
+    case 0x1C:
+    case 0x2C:
+    case 0x3C: strcpy(initial_dst, REG8); break;
+    case 0x34: strcpy(initial_dst, INDIRECT); break;
+    default: return result;
+  }
+  switch (opcode) {
+
+    case 0x04: strcat(initial_dst, "B"); break;
+    case 0x14: strcat(initial_dst, "D"); break;
+    case 0x24: strcat(initial_dst, "H"); break;
+    case 0x34: strcat(initial_dst, "HL"); break;
+    case 0x0C: strcat(initial_dst, "C"); break;
+    case 0x1C: strcat(initial_dst, "E"); break;
+    case 0x2C: strcat(initial_dst, "L"); break;
+    case 0x3C: strcat(initial_dst, "A"); break;
+    default: return result;
+  }
+
+  strcpy(result.mnemonic, INC);
+  strcpy(result.dst, initial_dst);
+  return result;
+}
+
 gb_instruction_t generate_gb_ld_operands(uint8_t opcode) {
+
   gb_instruction_t result = {0};
 
   switch (opcode) {
@@ -419,8 +519,14 @@ gb_instruction_t generate_gb_cp_operands(uint8_t opcode) {
 
 gb_instruction_t generate_gb_instrucion(uint8_t opcode, const char *mnemonic) {
 
-  if (strcmp(mnemonic, "nop") == 0) {
+  if (strcmp(mnemonic, "NOP") == 0) {
     return generate_gb_nop_operands(opcode);
+  }
+  else if (strcmp(mnemonic, "STOP") == 0) {
+    return generate_gb_stop_operands(opcode);
+  }
+  else if (strcmp(mnemonic, "HALT") == 0) {
+    return generate_gb_halt_operands(opcode);
   }
   else if (strcmp(mnemonic, "LD") == 0) {
     return generate_gb_ld_operands(opcode);
@@ -428,11 +534,15 @@ gb_instruction_t generate_gb_instrucion(uint8_t opcode, const char *mnemonic) {
   else if (strcmp(mnemonic, "CP") == 0) {
     return generate_gb_cp_operands(opcode);
   }
-  else if (strcmp(mnemonic, "") == 0) {
+  else if (strcmp(mnemonic, "JR") == 0) {
+    return generate_gb_jr_operands(opcode);
   }
-  else if (strcmp(mnemonic, "") == 0) {
-
-
+  else if (strcmp(mnemonic, "INC") == 0) {
+    return generate_gb_inc_operands(opcode);
+  }
+  else {
+    gb_instruction_t result = {0};
+    return result;
   }
 
 }
